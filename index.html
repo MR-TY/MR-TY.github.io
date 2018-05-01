@@ -163,6 +163,100 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-shiro学习二：shiro的认证" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/05/01/shiro学习二：shiro的认证/" class="article-date">
+  	<time datetime="2018-05-01T11:45:37.454Z" itemprop="datePublished">2018-05-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/01/shiro学习二：shiro的认证/">
+        文章三：shiro学习二(shiro的认证)
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="一、shiro的认证步骤"><a href="#一、shiro的认证步骤" class="headerlink" title="一、shiro的认证步骤"></a>一、shiro的认证步骤</h4><ol>
+<li>建立应用程序</li>
+<li>获取当前的subject</li>
+<li>调用subject，校验subject是否已经登录</li>
+<li>若没有被认证，则把用户名和密码封装为UsernamePasswordToken</li>
+</ol>
+<ul>
+<li>创建一个表单的页面</li>
+<li>把请求提交到springmvc的handler</li>
+<li>然后在获取用户名和密码</li>
+</ul>
+<ol start="5">
+<li>执行登录：调用subject的login方法</li>
+<li>自定义realm的方法，从数据库中获取对应的记录返回给Shiro</li>
+<li>由shiro完成对密码的比对</li>
+</ol>
+<p>举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">package com.ty.shiro.shiroHandlers;</span><br><span class="line">@Controller</span><br><span class="line">@RequestMapping(&quot;/shiro&quot;)</span><br><span class="line">public class ShiroHandler &#123;</span><br><span class="line">	private final static Logger LOG = LogManager.getLogger(ShiroHandler.class);</span><br><span class="line">	@RequestMapping(&quot;login&quot;)</span><br><span class="line">	public String login(@RequestParam(&quot;UserName&quot;)String UserName,</span><br><span class="line">			@RequestParam(&quot;PassWord&quot;)String PassWord)&#123;</span><br><span class="line">//1.获取subject		</span><br><span class="line">Subject currentUser = SecurityUtils.getSubject();</span><br><span class="line">//2.判断当前的用户是否被认证过</span><br><span class="line">		if (!currentUser.isAuthenticated()) &#123;</span><br><span class="line">				//3...如果没有认证把用户名和密码封装为token对象，参数：用户名和密码</span><br><span class="line">				UsernamePasswordToken token = new UsernamePasswordToken(UserName, PassWord);</span><br><span class="line">				token.setRememberMe(true);</span><br><span class="line">				try &#123;</span><br><span class="line">					System.out.println(&quot;1:&quot;+token.hashCode());</span><br><span class="line">					// 4.获取当前的登录的token</span><br><span class="line">		        	currentUser.login(token);</span><br><span class="line">				&#125;</span><br><span class="line">				//这是由认证时抛出的异常，利用AuthenticationException抓取，所以这个异常是所有认证异常的父类</span><br><span class="line">				catch (AuthenticationException  ae) &#123;</span><br><span class="line">					System.out.println(&quot;登录失败:&quot; + ae.getMessage());</span><br><span class="line">				&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		return &quot;/success&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">package com.ty.shirorealm;</span><br><span class="line">public class ShiroRealm extends AuthenticatingRealm &#123;</span><br><span class="line">	//这里的token就是前面subject获取当前的用户，没获取成功，然后创建一个token</span><br><span class="line">	@Override</span><br><span class="line">	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException &#123;</span><br><span class="line">		System.out.println(&quot;doGetAuthenticationInfo:&quot;+token.hashCode());</span><br><span class="line">		//1.把AuthenticationToken转换为UsernamePasswordToken</span><br><span class="line">		UsernamePasswordToken uPasswordToken = (UsernamePasswordToken)token;</span><br><span class="line">		//2.从UsernamePasswordToken中获取username</span><br><span class="line">		String userName = uPasswordToken.getUsername();</span><br><span class="line">		//3.调用数据库的数据</span><br><span class="line">		System.out.println(&quot;从数据库中获取userName：&quot;+userName+&quot;所对应的信息&quot;);</span><br><span class="line">		//4.查看数据库是否存在，不存在就抛出UnknownAccountException</span><br><span class="line">		if (&quot;unKnown&quot;.equals(userName)) &#123;</span><br><span class="line">			System.out.println(&quot;welcome&quot;);</span><br><span class="line">			throw new UnknownAccountException(&quot;用户不存在&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		//5.根据用户的信息是否抛出其他的异常</span><br><span class="line">		if (&quot;monster&quot;.equals(userName)) &#123;</span><br><span class="line">			throw new LockedAccountException(&quot;用户被锁定&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		//6.根据用户的情况来构建AuthenticationInfo对象并且返回,通常使用的实现类是SimpleAuthenticationInfo</span><br><span class="line">		//以下信息是从数据库中获取的</span><br><span class="line">		//参数一：认证的实体信息，可以是username，也可以是用户表对应的实体类对象</span><br><span class="line">		//参数二：数据表中获取的密码</span><br><span class="line">		//参数三：当前reaml对象的name，调用父类的getName即可</span><br><span class="line">		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(userName, &quot;123456&quot;, getName());</span><br><span class="line">		return info;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="二、密码的加密-MD5"><a href="#二、密码的加密-MD5" class="headerlink" title="二、密码的加密(MD5)"></a>二、密码的加密(MD5)</h4><h5 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h5><ul>
+<li>配置文件：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;jdbcRealm&quot; class=&quot;com.ty.shirorealm.ShiroRealm&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;credentialsMatcher&quot;&gt;</span><br><span class="line">			&lt;bean class=&quot;org.apache.shiro.authc.credential.HashedCredentialsMatcher&quot;&gt;</span><br><span class="line">				&lt;property name=&quot;hashAlgorithmName&quot; value=&quot;MD5&quot;&gt;&lt;/property&gt;</span><br><span class="line">				&lt;!--指定加密的次数 --&gt;</span><br><span class="line">				&lt;property name=&quot;hashIterations&quot; value=&quot;1024&quot;&gt;&lt;/property&gt;</span><br><span class="line">			&lt;/bean&gt;</span><br><span class="line">		&lt;/property&gt;</span><br><span class="line">	&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>作用：从前台输入的密码，自动进行MD5加密</p>
+<ul>
+<li>把密码送给SimpleAuthenticationInfo：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException &#123;</span><br><span class="line">		System.out.println(&quot;doGetAuthenticationInfo:&quot;+token.hashCode());</span><br><span class="line">		//1.把AuthenticationToken转换为UsernamePasswordToken</span><br><span class="line">		UsernamePasswordToken uPasswordToken = (UsernamePasswordToken)token;</span><br><span class="line">		//2.从UsernamePasswordToken中获取username</span><br><span class="line">		String userName = uPasswordToken.getUsername();</span><br><span class="line">		//3.调用数据库的数据</span><br><span class="line">		System.out.println(&quot;从数据库中获取userName：&quot;+userName+&quot;所对应的信息&quot;);</span><br><span class="line">		//4.查看数据库是否存在，不存在就抛出UnknownAccountException</span><br><span class="line">		if (&quot;unKnown&quot;.equals(userName)) &#123;</span><br><span class="line">			System.out.println(&quot;welcome&quot;);</span><br><span class="line">			throw new UnknownAccountException(&quot;用户不存在&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		//5.根据用户的信息是否抛出其他的异常</span><br><span class="line">		if (&quot;monster&quot;.equals(userName)) &#123;</span><br><span class="line">			throw new LockedAccountException(&quot;用户被锁定&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		//6.根据用户的情况来构建AuthenticationInfo对象并且返回,通常使用的实现类是SimpleAuthenticationInfo</span><br><span class="line">		//以下信息是从数据库中获取的</span><br><span class="line">		//参数一：认证的实体信息，可以是username，也可以是用户表对应的实体类对象</span><br><span class="line">		//参数二：数据表中获取的密码</span><br><span class="line">		//参数三：当前reaml对象的name，调用父类的getName即可</span><br><span class="line">//----------------------密码的加密------------------------</span><br><span class="line">		Object principle = userName;</span><br><span class="line">		Object credentias = null;</span><br><span class="line">		if (&quot;admin&quot;.equals(userName)) &#123;</span><br><span class="line">			credentias=&quot;038bdaf98f2037b31f1e75b5b4c9b26e&quot;;</span><br><span class="line">		&#125;else if (&quot;user&quot;.equals(userName)) &#123;</span><br><span class="line">			credentias=&quot;098d2c478e9c11555ce2823231e02ec1&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		//利用getName()获取盐值</span><br><span class="line">		String reamlName = getName();</span><br><span class="line">		//盐值加密，作用：即使密码一样最后的值也不一样</span><br><span class="line">		ByteSource Salt = ByteSource.Util.bytes(userName);//使用用户名作为盐的原始值，这是唯一的标志</span><br><span class="line">		return new SimpleAuthenticationInfo(principle, credentias,Salt, reamlName);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="盐值概念简介："><a href="#盐值概念简介：" class="headerlink" title="盐值概念简介："></a>盐值概念简介：</h5><p>在现实生活中，有可能不同用户的密码是相同的，但是加密的值也是相同的，但是加入盐值之后，利用用户名作为盐值的原始值，因为用户名是唯一标识，所以这样通过盐值加密，获取的密码就不相同了</p>
+<h4 id="三、多realm的认证策略"><a href="#三、多realm的认证策略" class="headerlink" title="三、多realm的认证策略"></a>三、多realm的认证策略</h4><ul>
+<li>配置文件：<!--配置一个认证器 -->
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;authenticator&quot; class=&quot;org.apache.shiro.authc.pam.ModularRealmAuthenticator&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;realms&quot;&gt;</span><br><span class="line">			&lt;list&gt;</span><br><span class="line">				&lt;ref bean=&quot;jdbcRealm&quot; /&gt;</span><br><span class="line">				&lt;ref bean=&quot;secondRealm&quot; /&gt;</span><br><span class="line">			&lt;/list&gt;</span><br><span class="line">		&lt;/property&gt;</span><br><span class="line">	&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 3. 第一个Realm：配置MD5实现了从前台输入的密码自动加密 --&gt;</span><br><span class="line">	&lt;bean id=&quot;jdbcRealm&quot; class=&quot;com.ty.shirorealm.ShiroRealm&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;credentialsMatcher&quot;&gt;</span><br><span class="line">			&lt;bean class=&quot;org.apache.shiro.authc.credential.HashedCredentialsMatcher&quot;&gt;</span><br><span class="line">				&lt;property name=&quot;hashAlgorithmName&quot; value=&quot;MD5&quot;&gt;&lt;/property&gt;</span><br><span class="line">				&lt;!--指定加密的次数 --&gt;</span><br><span class="line">				&lt;property name=&quot;hashIterations&quot; value=&quot;1024&quot;&gt;&lt;/property&gt;</span><br><span class="line">			&lt;/bean&gt;</span><br><span class="line">		&lt;/property&gt;</span><br><span class="line">	&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!--第二个Realm --&gt;</span><br><span class="line">	&lt;bean id=&quot;secondRealm&quot; class=&quot;com.ty.shirorealm.SecondShiroRealm&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;credentialsMatcher&quot;&gt;</span><br><span class="line">			&lt;bean class=&quot;org.apache.shiro.authc.credential.HashedCredentialsMatcher&quot;&gt;</span><br><span class="line">				&lt;property name=&quot;hashAlgorithmName&quot; value=&quot;SHA1&quot;&gt;&lt;/property&gt;</span><br><span class="line">				&lt;property name=&quot;hashIterations&quot; value=&quot;1024&quot;&gt;&lt;/property&gt;</span><br><span class="line">			&lt;/bean&gt;</span><br><span class="line">		&lt;/property&gt;</span><br><span class="line">	&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>注：</p>
+<p>&lt;1:认证策略：多个realm只要有一个认证成功就行</p>
+<p>&lt;2:不配置这个：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name=&quot;authenticationStrategy&quot;&gt;</span><br><span class="line">			&lt;bean class=&quot;org.apache.shiro.authc.pam.AllSuccessfulStrategy&quot;&gt;&lt;/bean&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>配置这个：就必须全部认证成功才行</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-shiro学习一：基础" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
