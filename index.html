@@ -163,6 +163,69 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-shiro学习四：shiro的会话管理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/05/01/shiro学习四：shiro的会话管理/" class="article-date">
+  	<time datetime="2018-05-01T12:11:05.107Z" itemprop="datePublished">2018-05-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/01/shiro学习四：shiro的会话管理/">
+        文章五：shiro学习四(shiro的会话管理)
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h4><p>shiro提供了完整企业级的会话管理，部依赖于底层的容器，不管javaSE还是javaEE环境都可以使用，提供了会话管理，会话监听，会话存储/持久化，对web的透明支持，SSO单点登录的支持等特性</p>
+<h4 id="会话相关的API"><a href="#会话相关的API" class="headerlink" title="会话相关的API"></a>会话相关的API</h4><p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180423/Ij63H77bLG.png?imageslim" alt="mark"><br><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180423/i2kj0GElI0.png?imageslim" alt="mark"></p>
+<h4 id="会话监听器"><a href="#会话监听器" class="headerlink" title="会话监听器"></a>会话监听器</h4><p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180423/4Lk79JC3F1.png?imageslim" alt="mark"></p>
+<ol>
+<li>设置session</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(&quot;/testShiroAnnotation&quot;)</span><br><span class="line">public String TestService(HttpSession session)&#123;</span><br><span class="line">	System.out.println(&quot;进入测试页面&quot;);</span><br><span class="line">	session.setAttribute(&quot;key&quot;, &quot;123456&quot;);</span><br><span class="line">	shiroService.OutPut();</span><br><span class="line">	return &quot;redirect:/success.jsp&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.获取session</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package com.ty.shiro.service;</span><br><span class="line">import javax.servlet.http.HttpSession;</span><br><span class="line">import org.apache.log4j.LogManager;</span><br><span class="line">import org.apache.log4j.Logger;</span><br><span class="line">import org.apache.shiro.SecurityUtils;</span><br><span class="line">import org.apache.shiro.authz.annotation.RequiresRoles;</span><br><span class="line">import org.apache.shiro.session.Session;</span><br><span class="line">import org.springframework.stereotype.Service;</span><br><span class="line">public class ShiroService &#123;</span><br><span class="line">	private final static Logger LOG = LogManager.getLogger(ShiroService.class);</span><br><span class="line">	@RequiresRoles(value=&#123;&quot;admin&quot;&#125;)//只允许admin这个用户进行访问</span><br><span class="line">	public void OutPut()&#123;</span><br><span class="line">		Session session = SecurityUtils.getSubject().getSession();//得到session</span><br><span class="line">		Object object = session.getAttribute(&quot;key&quot;);</span><br><span class="line">		System.out.println(&quot;service的输出:&quot;+object);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-shiro学习三：shiro的授权" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
