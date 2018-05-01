@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>文章四：shiro学习三(shiro的授权) | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、读取realm，通过配置文件了解securityManager作用1.配置文件  授权的bean可以引用realm 123456789&amp;lt;bean id=&amp;quot;authenticator&amp;quot; class=&amp;quot;org.apache.shiro.authc.pam.ModularRealmAuthenticator&amp;quot;&amp;gt;		&amp;lt;property name">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文章四：shiro学习三(shiro的授权)">
+<meta property="og:url" content="http://MR-TY.github.io.com/2018/05/01/shiro学习三：shiro的授权/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、读取realm，通过配置文件了解securityManager作用1.配置文件  授权的bean可以引用realm 123456789&amp;lt;bean id=&amp;quot;authenticator&amp;quot; class=&amp;quot;org.apache.shiro.authc.pam.ModularRealmAuthenticator&amp;quot;&amp;gt;		&amp;lt;property name">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-01T12:05:26.148Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文章四：shiro学习三(shiro的授权)">
+<meta name="twitter:description" content="一、读取realm，通过配置文件了解securityManager作用1.配置文件  授权的bean可以引用realm 123456789&amp;lt;bean id=&amp;quot;authenticator&amp;quot; class=&amp;quot;org.apache.shiro.authc.pam.ModularRealmAuthenticator&amp;quot;&amp;gt;		&amp;lt;property name">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://p7l91sx1t.bkt.clouddn.com/blog/180422/K9kAfmeBFi.png?imageslim" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">MR-TY</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">MR-TY</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://p7l91sx1t.bkt.clouddn.com/blog/180422/K9kAfmeBFi.png?imageslim" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">MR-TY</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-shiro学习三：shiro的授权" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/05/01/shiro学习三：shiro的授权/" class="article-date">
+  	<time datetime="2018-05-01T12:05:39.461Z" itemprop="datePublished">2018-05-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      文章四：shiro学习三(shiro的授权)
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="一、读取realm，通过配置文件了解securityManager作用"><a href="#一、读取realm，通过配置文件了解securityManager作用" class="headerlink" title="一、读取realm，通过配置文件了解securityManager作用"></a>一、读取realm，通过配置文件了解securityManager作用</h4><p>1.配置文件</p>
+<ul>
+<li><p>授权的bean可以引用realm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;authenticator&quot; class=&quot;org.apache.shiro.authc.pam.ModularRealmAuthenticator&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;authenticationStrategy&quot;&gt;</span><br><span class="line">			&lt;bean class=&quot;org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy&quot;&gt;&lt;/bean&gt;</span><br><span class="line">		&lt;/property&gt;</span><br><span class="line">		&lt;list&gt;</span><br><span class="line">				&lt;ref bean=&quot;jdbcRealm&quot; /&gt;</span><br><span class="line">				&lt;ref bean=&quot;secondRealm&quot;/&gt;</span><br><span class="line">		&lt;/list&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>但是利用securityManager完全可以不用authenticator加入引用<br>authenticator</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;securityManager&quot; class=&quot;org.apache.shiro.web.mgt.DefaultWebSecurityManager&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;authenticator&quot; ref=&quot;authenticator&quot;&gt;&lt;/property&gt;</span><br><span class="line">		&lt;property name=&quot;realms&quot;&gt;</span><br><span class="line">			&lt;list&gt;</span><br><span class="line">				&lt;ref bean=&quot;jdbcRealm&quot; /&gt;</span><br><span class="line">				&lt;ref bean=&quot;secondRealm&quot;/&gt;</span><br><span class="line">			&lt;/list&gt;</span><br><span class="line">		&lt;/property&gt;</span><br><span class="line">		&lt;property name=&quot;rememberMeManager.cookie.maxAge&quot; value=&quot;10&quot;&gt;&lt;/property&gt;</span><br><span class="line">	&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!--配置一个认证器 --&gt;</span><br><span class="line">	&lt;bean id=&quot;authenticator&quot; class=&quot;org.apache.shiro.authc.pam.ModularRealmAuthenticator&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;authenticationStrategy&quot;&gt;</span><br><span class="line">			&lt;bean class=&quot;org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy&quot;&gt;&lt;/bean&gt;</span><br><span class="line">		&lt;/property&gt;</span><br><span class="line">	&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>2.shiro支持三种编程方式</p>
+<ul>
+<li>编程式：通过if/else授权代码块完成</li>
+<li>注解式：通过在执行的java方法上放置响应的注解完成，没有权限将抛出响应的异常</li>
+<li>JSP/GSP标签：在JSP/GSP页面通过相应的标签完成<h4 id="二、授权"><a href="#二、授权" class="headerlink" title="二、授权"></a>二、授权</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;shiroFilter&quot; class=&quot;org.apache.shiro.spring.web.ShiroFilterFactoryBean&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;securityManager&quot; ref=&quot;securityManager&quot; /&gt;</span><br><span class="line">		&lt;property name=&quot;loginUrl&quot; value=&quot;/login.jsp&quot; /&gt;</span><br><span class="line">		&lt;property name=&quot;successUrl&quot; value=&quot;/list.jsp&quot; /&gt;</span><br><span class="line">		&lt;!--没有权限的用户只能来这个页面  --&gt;</span><br><span class="line">		&lt;property name=&quot;unauthorizedUrl&quot; value=&quot;/unauthorized.jsp&quot; /&gt;</span><br><span class="line">		&lt;!-- &lt;property name=&quot;filterChainDefinitionMap&quot; ref=&quot;filterChainDefinitionMap&quot;&gt;&lt;/property&gt; --&gt;</span><br><span class="line">		&lt;!-- 配置哪些页面需要受保护. 以及访问这些页面需要的权限. </span><br><span class="line">			1). anon 可以被匿名访问 </span><br><span class="line">			2). authc 使用通配符(/**)必须认证(即登录)后才可能访问的页面. </span><br><span class="line">			3). logout 登出. </span><br><span class="line">			4). roles 角色过滤器 </span><br><span class="line">		--&gt;</span><br><span class="line">		&lt;property name=&quot;filterChainDefinitions&quot;&gt;</span><br><span class="line">			&lt;value&gt;</span><br><span class="line">				/login.jsp = anon&lt;!-- 除了这个之外，其他的所有请求都需要被认证 --&gt;</span><br><span class="line">				/shiro/login = anon</span><br><span class="line">				/shiro/LoginOut = logout&lt;!--这样在转发页面的时候不会留下缓存 --&gt;</span><br><span class="line">				/user.jsp = roles[user]&lt;!--权限设置  --&gt;</span><br><span class="line">				/admin.jsp = roles[admin]</span><br><span class="line"></span><br><span class="line">				# everything else requires authentication:</span><br><span class="line">				/** = authc&lt;!--必须认证后才能访问 --&gt;</span><br><span class="line">			&lt;/value&gt;</span><br><span class="line">		&lt;/property&gt;</span><br><span class="line">	&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="三、授权的编程式："><a href="#三、授权的编程式：" class="headerlink" title="三、授权的编程式："></a>三、授权的编程式：</h4><p>1.授权需要继承AuthorizingRealm，并实现其一个抽象的方法doGetAuthenticationInfo</p>
+<p>2.AuthorizingRealm类继承自类继承自AuthenticatingRealm，但没有实现doGetAuthenticationInfo所以授权只需要继承AuthorizingRealm，就可以了，同时实现他的两个抽象方法</p>
+<p>注：多realm授权的通过标准，只要有一个realm通过就能返回true</p>
+<p>3.继承AuthorizingRealm<br>重写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//用于验证</span><br><span class="line">protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)&#123;</span><br><span class="line">    .......</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//用于授权会被shiro回调的方法，配置权限的jsp页面都会经过这个方法，不过是授权还是没有授权</span><br><span class="line">@Override</span><br><span class="line">protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) &#123;</span><br><span class="line">	System.out.println(&quot;进到授权的页面了-------------&quot;);</span><br><span class="line">		// 1.利用PrincipalCollection获取登录用户的信息</span><br><span class="line">		Object principal = principals.getPrimaryPrincipal();</span><br><span class="line">		// 2.利用登录用户的信息，判断用户当前的角色(可能需要查询数据库)</span><br><span class="line">		Set&lt;String&gt; roles = new HashSet&lt;&gt;();</span><br><span class="line">		roles.add(&quot;user&quot;);// 如果是user的类型，则只有一个角色</span><br><span class="line">		if (&quot;admin&quot;.equals(principal)) &#123;</span><br><span class="line">			roles.add(&quot;user&quot;);// 如果是admin的角色，则还会有一个user的角色</span><br><span class="line">			roles.add(&quot;admin&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		// 3.创建SimpleAuthorizationInfo,并设置其reles的属性</span><br><span class="line">		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roles);</span><br><span class="line">		// 4.返回授权的对象</span><br><span class="line">		return info;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="四、权限的注解模式："><a href="#四、权限的注解模式：" class="headerlink" title="四、权限的注解模式："></a>四、权限的注解模式：</h4><ol>
+<li>@RequiresAuthentication：表示当前Subject已经通过login 进行了身份验证；即 Subject. isAuthenticated() 返回 true</li>
+<li>@RequiresUser：表示当前 Subject 已经身份验证或者通过记 住我登录的。</li>
+<li>@RequiresGuest：表示当前Subject没有身份验证或通过记住 我登录过，即是游客身份。</li>
+<li>@RequiresRoles(value={“admin”, “user”}, logical= Logical.AND)：表示当前 Subject 需要角色 admin 和user</li>
+<li>@RequiresPermissions (value={“user:a”, “user:b”}, logical= Logical.OR)：表示当前 Subject 需要权限 user:a 或<br>user:b。</li>
+</ol>
+<p>service：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">package com.ty.shiro.service;</span><br><span class="line">import org.apache.log4j.LogManager;</span><br><span class="line">import org.apache.log4j.Logger;</span><br><span class="line">import org.apache.shiro.authz.annotation.RequiresRoles;</span><br><span class="line">import org.springframework.stereotype.Service;</span><br><span class="line">public class ShiroService &#123;</span><br><span class="line">	private final static Logger LOG = LogManager.getLogger(ShiroService.class);</span><br><span class="line">	@RequiresRoles(value=&#123;&quot;admin&quot;&#125;)//只允许admin这个用户进行访问</span><br><span class="line">	public void OutPut()&#123;</span><br><span class="line">		System.out.println(&quot;service的输出&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注：@RequiresRoles(value={“admin”})表示只能是admin的用户角色才能进行访问</p>
+<p>service：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(&quot;/testShiroAnnotation&quot;)</span><br><span class="line">	public String TestService()&#123;</span><br><span class="line">		System.out.println(&quot;进入测试页面&quot;);</span><br><span class="line">		shiroService.OutPut();</span><br><span class="line">		return &quot;redirect:/success.jsp&quot;;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="五、从数据表中初始化资源和权限-利用工厂模式获取用户的权限"><a href="#五、从数据表中初始化资源和权限-利用工厂模式获取用户的权限" class="headerlink" title="五、从数据表中初始化资源和权限(利用工厂模式获取用户的权限)"></a>五、从数据表中初始化资源和权限(利用工厂模式获取用户的权限)</h4><p>利用工厂的方法，为用户设置权限设置</p>
+<ul>
+<li>配置文件：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;shiroFilter&quot; class=&quot;org.apache.shiro.spring.web.ShiroFilterFactoryBean&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;securityManager&quot; ref=&quot;securityManager&quot; /&gt;</span><br><span class="line">		&lt;property name=&quot;loginUrl&quot; value=&quot;/login.jsp&quot; /&gt;</span><br><span class="line">		&lt;property name=&quot;successUrl&quot; value=&quot;/list.jsp&quot; /&gt;</span><br><span class="line">		&lt;property name=&quot;unauthorizedUrl&quot; value=&quot;/unauthorized.jsp&quot; /&gt;</span><br><span class="line">		&lt;property name=&quot;filterChainDefinitionMap&quot; ref=&quot;filterChainDefinitionMap&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;!--配置一个 bean, 该 bean 实际上是一个 Map. 通过实例工厂方法的方式  --&gt;</span><br><span class="line">&lt;bean id=&quot;filterChainDefinitionMap&quot; factory-bean=&quot;filterChainDefinitionMapFileter&quot; </span><br><span class="line">    factory-method=&quot;builderFilterChainDefiniteMap&quot;&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;filterChainDefinitionMapFileter&quot;</span><br><span class="line">	class=&quot;com.ty.shiro.Factory.FilterChainDefinitionMapFileter&quot;&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试类<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package com.ty.shiro.Factory;</span><br><span class="line">import java.util.LinkedHashMap;</span><br><span class="line">	public LinkedHashMap&lt;String, String&gt; buildFilterChainDefinitionMap()&#123;</span><br><span class="line">		LinkedHashMap&lt;String, String&gt; map = new LinkedHashMap&lt;&gt;();</span><br><span class="line">		map.put(&quot;/login.jsp&quot;, &quot;anon&quot;);</span><br><span class="line">		map.put(&quot;/shiro/login&quot;, &quot;anon&quot;);</span><br><span class="line">		map.put(&quot;/shiro/LoginOut&quot;, &quot;logout&quot;);</span><br><span class="line">		map.put(&quot;/user.jsp&quot;, &quot;authc,roles[user]&quot;);</span><br><span class="line">		map.put(&quot;/admin.jsp&quot;, &quot;authc,roles[admin]&quot;);</span><br><span class="line">		map.put(&quot;/list.jsp&quot;, &quot;user&quot;);</span><br><span class="line">		map.put(&quot;/**&quot;, &quot;authc&quot;);</span><br><span class="line">		return map;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/05/01/shiro学习二：shiro的认证/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">文章三：shiro学习二(shiro的认证)</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="shiro学习三：shiro的授权" data-title="文章四：shiro学习三(shiro的授权)" data-url="http://MR-TY.github.io.com/2018/05/01/shiro学习三：shiro的授权/"  data-images="http://p7l91sx1t.bkt.clouddn.com/blog/180422/K9kAfmeBFi.png?imageslim" data-content="文章四：shiro学习三(shiro的授权)">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 MR-TY
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
