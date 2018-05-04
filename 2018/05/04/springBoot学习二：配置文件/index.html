@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>文章八：springBoot学习二(配置文件) | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、文件类别区分 SpringBoot使用一个全局配置文件,配置文件的名字固定   application.properties application.yml   配置文件的作用：修改SpringBoot的自动配置的默认值，因为SpringBoot在底层已经自动配置好了 yml文件：   定义：以前的配置文件大多数使用xxx.xml，现在推出yml文件 优点：以数据为中心，比json，xml更适">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文章八：springBoot学习二(配置文件)">
+<meta property="og:url" content="http://MR-TY.github.io.com/2018/05/04/springBoot学习二：配置文件/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、文件类别区分 SpringBoot使用一个全局配置文件,配置文件的名字固定   application.properties application.yml   配置文件的作用：修改SpringBoot的自动配置的默认值，因为SpringBoot在底层已经自动配置好了 yml文件：   定义：以前的配置文件大多数使用xxx.xml，现在推出yml文件 优点：以数据为中心，比json，xml更适">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/dBiBE671ei.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/cjjj0H9FD8.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/ldlGl5CK6k.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/EIJ6AcCiK8.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/Jeb95d5ckh.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/7ECdKIhK22.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/9l6HD3j8bk.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/CABeGjm910.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/hkBD2aFdF6.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/70fI07Gjd0.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/9c7B9aIj5e.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/jE55c4lEKl.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/d5Eee459i2.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/khfdj34EcG.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/GbEFhe0gHI.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/5l7m8a1K9j.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/ma6fcLeBie.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/H23jAgIKi8.png?imageslim">
+<meta property="og:updated_time" content="2018-05-04T09:21:36.818Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文章八：springBoot学习二(配置文件)">
+<meta name="twitter:description" content="一、文件类别区分 SpringBoot使用一个全局配置文件,配置文件的名字固定   application.properties application.yml   配置文件的作用：修改SpringBoot的自动配置的默认值，因为SpringBoot在底层已经自动配置好了 yml文件：   定义：以前的配置文件大多数使用xxx.xml，现在推出yml文件 优点：以数据为中心，比json，xml更适">
+<meta name="twitter:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180502/dBiBE671ei.png?imageslim">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://p7l91sx1t.bkt.clouddn.com/blog/180422/K9kAfmeBFi.png?imageslim" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">MR-TY</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">MR-TY</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://p7l91sx1t.bkt.clouddn.com/blog/180422/K9kAfmeBFi.png?imageslim" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">MR-TY</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-springBoot学习二：配置文件" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/05/04/springBoot学习二：配置文件/" class="article-date">
+  	<time datetime="2018-05-04T09:21:35.627Z" itemprop="datePublished">2018-05-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      文章八：springBoot学习二(配置文件)
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="一、文件类别区分"><a href="#一、文件类别区分" class="headerlink" title="一、文件类别区分"></a>一、文件类别区分</h4><ol>
+<li>SpringBoot使用一个全局配置文件,配置文件的名字固定</li>
+</ol>
+<ul>
+<li>application.properties</li>
+<li>application.yml</li>
+</ul>
+<ol start="2">
+<li>配置文件的作用：修改SpringBoot的自动配置的默认值，因为SpringBoot在底层已经自动配置好了</li>
+<li>yml文件：</li>
+</ol>
+<ul>
+<li>定义：以前的配置文件大多数使用xxx.xml，现在推出yml文件</li>
+<li>优点：以数据为中心，比json，xml更适合做配置文件；</li>
+<li>配置方式：</li>
+</ul>
+<p>&lt;1:yml:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port:8090</span><br></pre></td></tr></table></figure>
+<p>&lt;2:xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;server&gt;</span><br><span class="line">    &lt;port&gt;8090&lt;/port&gt;</span><br><span class="line">&lt;/server&gt;</span><br></pre></td></tr></table></figure></p>
+<h4 id="二、yml的基本语法"><a href="#二、yml的基本语法" class="headerlink" title="二、yml的基本语法"></a>二、yml的基本语法</h4><ol>
+<li>基本语法：</li>
+</ol>
+<ul>
+<li>k:(空格)v：表示一对键值队，空格必须有</li>
+<li>以空格的缩进来控制层级关系，只要是左对齐的一列数据都是同一个层级的</li>
+</ul>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/dBiBE671ei.png?imageslim" alt="mark"></p>
+<ol start="2">
+<li>字面量：普通的值(数字、字符串、布尔)</li>
+</ol>
+<p>&lt;1:k:v:字面直接来写</p>
+<ul>
+<li>字符串默认不用加上单引号或者双引号</li>
+<li>“”:双引号：不会转移特殊字符，特殊字符会作为本身想表示的内容</li>
+<li>‘’：单引号：会转译特殊字符，特殊字符会作为普通的字符串输出</li>
+</ul>
+<p>&lt;2:对象：Map(属性值)(键值对)</p>
+<p>k:v：对象还是k:v方式</p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/cjjj0H9FD8.png?imageslim" alt="mark"></p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/ldlGl5CK6k.png?imageslim" alt="mark"></p>
+<p>&lt;3:数组(List、Set)</p>
+<p>用-值表示数组中的一个元素</p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/EIJ6AcCiK8.png?imageslim" alt="mark"></p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/Jeb95d5ckh.png?imageslim" alt="mark"></p>
+<h4 id="二、获取yml配置文件的值"><a href="#二、获取yml配置文件的值" class="headerlink" title="二、获取yml配置文件的值"></a>二、获取yml配置文件的值</h4><ol>
+<li>建立实体类</li>
+<li>在yaml中设置实体类的值</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8081</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">person:</span><br><span class="line">  lastName: 张三</span><br><span class="line">  age: 18</span><br><span class="line">  boss: true</span><br><span class="line">  birth: 2017/3/14</span><br><span class="line">  map: &#123;k1: v1,k2: 12&#125;</span><br><span class="line">  lists:</span><br><span class="line">    - 李四</span><br><span class="line">    - 赵六</span><br><span class="line">  dog:</span><br><span class="line">    name: 小五</span><br><span class="line">    age: 1</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>设置实体类与文件相关联</li>
+</ol>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/7ECdKIhK22.png?imageslim" alt="mark"></p>
+<ol start="4">
+<li>注入依赖进行实体类与配置文件绑定</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置文件进行绑定，yaml配置文件中就有相应的提示--&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-configuration-processor&lt;/artifactId&gt;</span><br><span class="line">            &lt;optional&gt;true&lt;/optional&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="三、properties文件注入实体属性并解决乱码问题"><a href="#三、properties文件注入实体属性并解决乱码问题" class="headerlink" title="三、properties文件注入实体属性并解决乱码问题"></a>三、properties文件注入实体属性并解决乱码问题</h4><ol>
+<li>properties文件编写<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">person.last-name=唐宇</span><br><span class="line">person.age=24</span><br><span class="line">person.birth=2017/3/14</span><br><span class="line">person.boss=true</span><br><span class="line">person.map.k1=v1</span><br><span class="line">person.lists=a,b,c</span><br><span class="line">person.dog.name=小五</span><br><span class="line">person.dog.age=1</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>2.其余与实体绑定方式与yaml文件与实体绑定方式一样</p>
+<p>3.解决乱码问题</p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/9l6HD3j8bk.png?imageslim" alt="mark"></p>
+<h4 id="四、另一种获取文件属性值的方式及区别"><a href="#四、另一种获取文件属性值的方式及区别" class="headerlink" title="四、另一种获取文件属性值的方式及区别"></a>四、另一种获取文件属性值的方式及区别</h4><ol>
+<li><p>value获取值<br><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/CABeGjm910.png?imageslim" alt="mark"></p>
+</li>
+<li><p>区别</p>
+</li>
+</ol>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/hkBD2aFdF6.png?imageslim" alt="mark"></p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/70fI07Gjd0.png?imageslim" alt="mark"></p>
+<p>总结：</p>
+<ul>
+<li>两者都能获取配置文件中的值，只是有区别罢了。</li>
+<li>如果：我们只是在业务逻辑中获取一下配置文件中的某项值，就使用：@value</li>
+<li>如果：我们专门编写了一个JavaBean来和配置文件进行映射，我们就直接使用：@ConfigurationProperties(prefix = “person”)</li>
+</ul>
+<p>举例利用@value获取某一个值：</p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/9c7B9aIj5e.png?imageslim" alt="mark"></p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180502/jE55c4lEKl.png?imageslim" alt="mark"></p>
+<h4 id="五、-PropertySource-、-ImportResource、-Bean"><a href="#五、-PropertySource-、-ImportResource、-Bean" class="headerlink" title="五、@PropertySource()、@ImportResource、@Bean"></a>五、@PropertySource()、@ImportResource、@Bean</h4><ol>
+<li>@PropertySource(value = “classpath:person.properties”)：指定读取指定的文件</li>
+</ol>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/d5Eee459i2.png?imageslim" alt="mark"></p>
+<ol start="2">
+<li>@ImportResource：导入spring的配置文件</li>
+</ol>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/khfdj34EcG.png?imageslim" alt="mark"></p>
+<ol start="3">
+<li>@Bean</li>
+</ol>
+<ul>
+<li>建立一个配置类<br><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/GbEFhe0gHI.png?imageslim" alt="mark"></li>
+<li>@Bean作用是：将方法的返回值添加到容器中，容器中的组件默认的id就是这个方法名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * springboot的单元测试</span><br><span class="line"> * 可以在测试期间：很方便的自动注入</span><br><span class="line"> */</span><br><span class="line">@RunWith(SpringRunner.class)</span><br><span class="line">@SpringBootTest</span><br><span class="line">public class Springboot01QuickHelloworldApplicationTests &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private HelloService helloService;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void testHelloService() &#123;</span><br><span class="line">     helloService.hello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>@Configuration：建立配置类：作用是能代替spring的配置文件</li>
+</ol>
+<h4 id="六、配置文件占位符"><a href="#六、配置文件占位符" class="headerlink" title="六、配置文件占位符"></a>六、配置文件占位符</h4><p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/5l7m8a1K9j.png?imageslim" alt="mark"></p>
+<h4 id="七、Profile"><a href="#七、Profile" class="headerlink" title="七、Profile"></a>七、Profile</h4><ol>
+<li>定义：Profile是Spring对不同环境提供不同配置功能的支持，可以通过激活指定参数等方式快速切换环境</li>
+<li>profile</li>
+</ol>
+<ul>
+<li>多Profile文件：我们在主配文件编写的时候，application-(profile).properties/yml,但是启动的时候默认使用application.properties</li>
+<li>激活指定profile<br><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/ma6fcLeBie.png?imageslim" alt="mark"></li>
+<li>yml中文档快模式，好处：不用写那么多文件了</li>
+</ul>
+<p>spring:<br>  profiles:<br>    active: dev(这是激活的方式)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8081</span><br><span class="line">spring:</span><br><span class="line">  profiles:</span><br><span class="line">    active: dev</span><br><span class="line">---</span><br><span class="line">server:</span><br><span class="line">  port: 8083</span><br><span class="line">spring:</span><br><span class="line">  profiles: dev</span><br><span class="line">---</span><br><span class="line">server:</span><br><span class="line">  port: 8084</span><br><span class="line">spring:</span><br><span class="line">  profiles: prod</span><br></pre></td></tr></table></figure></p>
+<h4 id="八、配置文件加载位置"><a href="#八、配置文件加载位置" class="headerlink" title="八、配置文件加载位置"></a>八、配置文件加载位置</h4><p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/H23jAgIKi8.png?imageslim" alt="mark"></p>
+<p>注：优先级由高到低，高优先级会覆盖低优先级</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/04/springBoot学习四：SpringBoot与日志/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          文章九：springBoot学习三(SpringBoot与日志)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/02/springBoot学习一：基础学习/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">文章七：springBoot学习一(基础学习)</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="springBoot学习二：配置文件" data-title="文章八：springBoot学习二(配置文件)" data-url="http://MR-TY.github.io.com/2018/05/04/springBoot学习二：配置文件/"  data-images="http://p7l91sx1t.bkt.clouddn.com/blog/180422/K9kAfmeBFi.png?imageslim" data-content="文章八：springBoot学习二(配置文件)">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 MR-TY
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

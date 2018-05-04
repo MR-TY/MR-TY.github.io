@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>文章九：springBoot学习三(SpringBoot与日志) | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、市面上的日志框架  需要的和不需要的二、使用SLF4j   如何在系统中使用SF4j：以后开发的时候，日志记录的调用方法，不应该直接调用日志记录的实现类，而是调用日志记录抽样层里面的方法 给程序中导入SLF4j的jar和logback的jar 使用方法图解  总结：每一个日志的实现框架都有自己的配置文件。使用SL4j以后，配置文件还是做成日志实现框架本身的配置文件 三、日志的统一 不同的框架使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文章九：springBoot学习三(SpringBoot与日志)">
+<meta property="og:url" content="http://MR-TY.github.io.com/2018/05/04/springBoot学习四：SpringBoot与日志/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、市面上的日志框架  需要的和不需要的二、使用SLF4j   如何在系统中使用SF4j：以后开发的时候，日志记录的调用方法，不应该直接调用日志记录的实现类，而是调用日志记录抽样层里面的方法 给程序中导入SLF4j的jar和logback的jar 使用方法图解  总结：每一个日志的实现框架都有自己的配置文件。使用SL4j以后，配置文件还是做成日志实现框架本身的配置文件 三、日志的统一 不同的框架使">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/16cGm0BFcL.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/iJ1HiHI62K.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/c1Aa4dK49e.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/BikcGLAC0m.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/85E4jg4BKF.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180504/48lg0iJKHj.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180504/7jk6AIhGhm.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180504/0fdB8ilda1.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180504/jbL23Jmmfe.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180504/hH5mbD6J6b.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180504/1bBc4kJG9C.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180504/1j8FfGbBjl.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180504/BF6HlHHdaE.png?imageslim">
+<meta property="og:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180504/cFlmH9E0L1.png?imageslim">
+<meta property="og:updated_time" content="2018-05-04T09:21:45.959Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文章九：springBoot学习三(SpringBoot与日志)">
+<meta name="twitter:description" content="一、市面上的日志框架  需要的和不需要的二、使用SLF4j   如何在系统中使用SF4j：以后开发的时候，日志记录的调用方法，不应该直接调用日志记录的实现类，而是调用日志记录抽样层里面的方法 给程序中导入SLF4j的jar和logback的jar 使用方法图解  总结：每一个日志的实现框架都有自己的配置文件。使用SL4j以后，配置文件还是做成日志实现框架本身的配置文件 三、日志的统一 不同的框架使">
+<meta name="twitter:image" content="http://p7l91sx1t.bkt.clouddn.com/blog/180503/16cGm0BFcL.png?imageslim">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://p7l91sx1t.bkt.clouddn.com/blog/180422/K9kAfmeBFi.png?imageslim" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">MR-TY</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">MR-TY</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://p7l91sx1t.bkt.clouddn.com/blog/180422/K9kAfmeBFi.png?imageslim" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">MR-TY</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-springBoot学习四：SpringBoot与日志" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/05/04/springBoot学习四：SpringBoot与日志/" class="article-date">
+  	<time datetime="2018-05-04T09:21:44.916Z" itemprop="datePublished">2018-05-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      文章九：springBoot学习三(SpringBoot与日志)
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="一、市面上的日志框架"><a href="#一、市面上的日志框架" class="headerlink" title="一、市面上的日志框架"></a>一、市面上的日志框架</h4><p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/16cGm0BFcL.png?imageslim" alt="mark"></p>
+<ul>
+<li>需要的和不需要的<br><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/iJ1HiHI62K.png?imageslim" alt="mark"><h4 id="二、使用SLF4j"><a href="#二、使用SLF4j" class="headerlink" title="二、使用SLF4j"></a>二、使用SLF4j</h4></li>
+</ul>
+<ol>
+<li>如何在系统中使用SF4j：以后开发的时候，日志记录的调用方法，不应该直接调用日志记录的实现类，而是调用日志记录抽样层里面的方法</li>
+<li>给程序中导入SLF4j的jar和logback的jar</li>
+<li>使用方法图解<br><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/c1Aa4dK49e.png?imageslim" alt="mark"></li>
+</ol>
+<p>总结：每一个日志的实现框架都有自己的配置文件。使用SL4j以后，配置文件还是做成日志实现框架本身的配置文件</p>
+<h4 id="三、日志的统一"><a href="#三、日志的统一" class="headerlink" title="三、日志的统一"></a>三、日志的统一</h4><ol>
+<li>不同的框架使用不同的日志框架，但是一个要求是，我要指定某个系统就用某个日志框架，这时就要做日志统一的行为</li>
+</ol>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/BikcGLAC0m.png?imageslim" alt="mark"></p>
+<ol start="2">
+<li>解决统一的问题：</li>
+</ol>
+<ul>
+<li>将系统中其他的日志框架先排除</li>
+<li>用中间包替换原来的日志框架</li>
+<li>我们导入sl4j其它的实现</li>
+</ul>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180503/85E4jg4BKF.png?imageslim" alt="mark"></p>
+<h4 id="四、springBoot与日志之间的关系"><a href="#四、springBoot与日志之间的关系" class="headerlink" title="四、springBoot与日志之间的关系"></a>四、springBoot与日志之间的关系</h4><p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180504/48lg0iJKHj.png?imageslim" alt="mark"></p>
+<p>总结：</p>
+<ol>
+<li>SpringBoot底层也是使用slf4j+logback的方式进行日志的记录</li>
+<li>SpringBoot也把其它的日志替换成了slf4j</li>
+<li>中间替换包</li>
+</ol>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180504/7jk6AIhGhm.png?imageslim" alt="mark"></p>
+<ol start="4">
+<li>如果我们要导入其他的框架，一定要把这个框架的默认日志移除掉<h4 id="五、使用slf4j"><a href="#五、使用slf4j" class="headerlink" title="五、使用slf4j"></a>五、使用slf4j</h4></li>
+<li>应用举例：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//日志记录器</span><br><span class="line">   Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">   @Test</span><br><span class="line">   public void contextLoads() &#123;</span><br><span class="line">       //日志的级别由低到高：trace&lt;debug&lt;info&lt;warn&lt;error</span><br><span class="line">       //可以调整日志的级别，日志就会在这个级别以后的高级别输出</span><br><span class="line">       logger.trace(&quot;这是trance日志&quot;);</span><br><span class="line">       logger.debug(&quot;这是debug日志&quot;);</span><br><span class="line">       logger.info(&quot;这是info日志&quot;);</span><br><span class="line">       logger.warn(&quot;这是警告的日志&quot;);</span><br><span class="line">       logger.error(&quot;这是错误的信息&quot;);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>2.日志级别：由低到高：trace&lt;debug&lt;info&lt;warn&lt;error，这样就日志的级别由低到高：trace&lt;debug&lt;info&lt;warn&lt;error</p>
+<p>3.springboot的默认输出级别：</p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180504/0fdB8ilda1.png?imageslim" alt="mark"></p>
+<p>4.改变日志的输出级别：在配置文件中：logging.level.com.ty=trace</p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180504/jbL23Jmmfe.png?imageslim" alt="mark"></p>
+<p>5.在指定的盘下生成日志的文档<br><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180504/hH5mbD6J6b.png?imageslim" alt="mark"></p>
+<p>6.日志的输出格式：</p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180504/1bBc4kJG9C.png?imageslim" alt="mark"></p>
+<p>7.指定配置：给类路径下放上每个日志框架，自己的配置文件即可，SpringBoot就不使用它默认的配置了</p>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180504/1j8FfGbBjl.png?imageslim" alt="mark"><br>注：</p>
+<ul>
+<li>如果放的是logback.xml：直接就被日志框架识别了</li>
+</ul>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180504/BF6HlHHdaE.png?imageslim" alt="mark"></p>
+<ul>
+<li>logback-spring.xml:日志框架就不会直接加载日志的配置项，由SpringBoot高级特性，指定某段配置只在某一个环境中生效，注意logback.xml就没有这样的高级功能</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;springProfile name=&quot;staging&quot;&gt;</span><br><span class="line">	&lt;!-- configuration to be enabled when the &quot;staging&quot; profile is active --&gt;</span><br><span class="line">&lt;/springProfile&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="http://p7l91sx1t.bkt.clouddn.com/blog/180504/cFlmH9E0L1.png?imageslim" alt="mark"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/05/04/springBoot学习二：配置文件/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">文章八：springBoot学习二(配置文件)</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="springBoot学习四：SpringBoot与日志" data-title="文章九：springBoot学习三(SpringBoot与日志)" data-url="http://MR-TY.github.io.com/2018/05/04/springBoot学习四：SpringBoot与日志/"  data-images="http://p7l91sx1t.bkt.clouddn.com/blog/180422/K9kAfmeBFi.png?imageslim" data-content="文章九：springBoot学习三(SpringBoot与日志)">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 MR-TY
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
